@@ -35,9 +35,9 @@ public class Main {
         System.out.println();
         System.out.println("Эпики: ");
         System.out.println("Создание трех эпиков...");
-        Epic epic1 = taskManager.createEpic(new Epic("epic1" , Status.DONE, "epic1"));
-        Epic epic2 = taskManager.createEpic(new Epic("epic2" , Status.DONE, "epic2"));
-        Epic epic3 = taskManager.createEpic(new Epic("epic3" , Status.DONE, "epic3"));
+        Epic epic1 = taskManager.createEpic(new Epic("epic1" ,  "epic1"));
+        Epic epic2 = taskManager.createEpic(new Epic("epic2" ,  "epic2"));
+        Epic epic3 = taskManager.createEpic(new Epic("epic3" , "epic3"));
         System.out.println("Вывод всех Эпиков:");
         System.out.println(taskManager.getAllEpic());
         System.out.println("Вывод эпика по id 5:");
@@ -46,7 +46,7 @@ public class Main {
         taskManager.deleteEpic(4);
         System.out.println(taskManager.getAllEpic());
         System.out.println("Обновить эпик по id 6");
-        taskManager.updateEpic(new Epic(6, "epic3NEW", Status.IN_PROGRESS, "epic3NEW"));
+        taskManager.updateEpic(new Epic(6, "epic3NEW", "epic3NEW"));
         System.out.println(taskManager.getAllEpic());
         System.out.println("Список подзадач эпика id 6");
         System.out.println(taskManager.listSubTasksEpic(6));
@@ -57,19 +57,19 @@ public class Main {
         System.out.println();
         System.out.println("Подзадачи: ");
         System.out.println("Создание трех эпиков...");
-        Epic epic4 = taskManager.createEpic(new Epic("epic4" , Status.DONE, "epic4")); //id7
-        Epic epic5 = taskManager.createEpic(new Epic("epic5" , Status.DONE, "epic5")); //id8
-        Epic epic6 = taskManager.createEpic(new Epic("epic6" , Status.DONE, "epic6")); //id9
+        Epic epic4 = taskManager.createEpic(new Epic("epic4" , "epic4")); //id7
+        Epic epic5 = taskManager.createEpic(new Epic("epic5" , "epic5")); //id8
+        Epic epic6 = taskManager.createEpic(new Epic("epic6" , "epic6")); //id9
         System.out.println("Создание девяти подзадач...");
-        SubTask subTask1 = taskManager.createSubTask(new SubTask("subTask1", Status.NEW, "subTask1"), epic4);
-        SubTask subTask2 = taskManager.createSubTask(new SubTask("subTask2", Status.NEW, "subTask2"), epic4);
-        SubTask subTask3 = taskManager.createSubTask(new SubTask("subTask3", Status.NEW, "subTask3"), epic4);
-        SubTask subTask4 = taskManager.createSubTask(new SubTask("subTask4", Status.NEW, "subTask4"), epic5);
-        SubTask subTask5 = taskManager.createSubTask(new SubTask("subTask5", Status.DONE, "subTask5"), epic5);
-        SubTask subTask6 = taskManager.createSubTask(new SubTask("subTask6", Status.IN_PROGRESS, "subTask6"), epic5);
-        SubTask subTask7 = taskManager.createSubTask(new SubTask("subTask7", Status.DONE, "subTask7"), epic6);
-        SubTask subTask8 = taskManager.createSubTask(new SubTask("subTask8", Status.DONE, "subTask8"), epic6);
-        SubTask subTask9 = taskManager.createSubTask(new SubTask("subTask9", Status.DONE, "subTask9"), epic6);
+        SubTask subTask1 = taskManager.createSubTask(new SubTask("subTask1", Status.NEW, "subTask1", epic4));
+        SubTask subTask2 = taskManager.createSubTask(new SubTask("subTask2", Status.NEW, "subTask2", epic4));
+        SubTask subTask3 = taskManager.createSubTask(new SubTask("subTask3", Status.NEW, "subTask3", epic4));
+        SubTask subTask4 = taskManager.createSubTask(new SubTask("subTask4", Status.NEW, "subTask4", epic5));
+        SubTask subTask5 = taskManager.createSubTask(new SubTask("subTask5", Status.DONE, "subTask5", epic5));
+        SubTask subTask6 = taskManager.createSubTask(new SubTask("subTask6", Status.IN_PROGRESS, "subTask6", epic5));
+        SubTask subTask7 = taskManager.createSubTask(new SubTask("subTask7", Status.DONE, "subTask7", epic6));
+        SubTask subTask8 = taskManager.createSubTask(new SubTask("subTask8", Status.DONE, "subTask8", epic6));
+        SubTask subTask9 = taskManager.createSubTask(new SubTask("subTask9", Status.DONE, "subTask9", epic6));
         System.out.println("Вывод всех Подзадач:");
         System.out.println(taskManager.getAllSubTask());
         System.out.println("Вывод подзадач эпика id 8");
@@ -102,6 +102,15 @@ public class Main {
         System.out.println(taskManager.getAllSubTask());
         System.out.println("Вывод подзадач эпика id 8");
         System.out.println(taskManager.listSubTasksEpic(8));
-
+        System.out.println("Добавить подзадачу с несуществующим эпиком");
+        taskManager.createSubTask(new SubTask("subTaskPR", Status.DONE, "subTaskPR", new Epic("epicPR", "epicPR")));
+        System.out.println("Вывод всех Эпиков:");
+        System.out.println(taskManager.getAllEpic());
+        System.out.println("Вывод подзадач эпика id 19");
+        System.out.println(taskManager.listSubTasksEpic(19));
+        System.out.println("Удалить эпик id 19");
+        taskManager.deleteEpic(19);
+        System.out.println("Вывод всех подзадач:");
+        System.out.println(taskManager.getAllSubTask());
     }
 }
