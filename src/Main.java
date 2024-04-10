@@ -102,14 +102,8 @@ public class Main {
         System.out.println(taskManager.getAllSubTask());
         System.out.println("Вывод подзадач эпика id 8");
         System.out.println(taskManager.listSubTasksEpic(8));
-        System.out.println("Добавить подзадачу с несуществующим эпиком");
-        taskManager.createSubTask(new SubTask("subTaskPR", Status.DONE, "subTaskPR", new Epic("epicPR", "epicPR")));
         System.out.println("Вывод всех Эпиков:");
         System.out.println(taskManager.getAllEpic());
-        System.out.println("Вывод подзадач эпика id 19");
-        System.out.println(taskManager.listSubTasksEpic(19));
-        System.out.println("Удалить эпик id 19");
-        taskManager.deleteEpic(19);
         System.out.println("Вывод всех подзадач:");
         System.out.println(taskManager.getAllSubTask());
     }

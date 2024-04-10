@@ -56,34 +56,20 @@ public class TaskManager {
         return subTasks.get(id);
     }
     public SubTask createSubTask (SubTask subTask) {
-        boolean existenceEpic = false;
-        Epic epic = subTask.getEpic();
-        for (Epic ep : epics.values()) {
-            if (ep.getId() == epic.getId()) {
-                existenceEpic = true;
+            subTask.setId(generateId());
+            subTasks.put(subTask.getId(), subTask);
+            Epic saveEpic = epics.get(subTask.getEpic().getId());
+            if (saveEpic == null) {
+                return null;
+            }
+            else {
+                saveEpic.getSubTasks().add(subTask);
+                saveEpic.updateStatus();
+                epics.put(saveEpic.getId(), saveEpic);
+                return subTask;
             }
         }
-        if (!existenceEpic) {
-            Epic saveEpic = createEpic(epic);
-            subTask.setId(generateId());
-            subTask.setEpic(saveEpic);
-            subTasks.put(subTask.getId(), subTask);
-            saveEpic.getSubTasks().add(subTask);
-            saveEpic.updateStatus();
-            epics.put(saveEpic.getId(), saveEpic);
-            return subTask;
-        }
-        else {
-            subTask.setId(generateId());
-            subTask.setEpic(epic);
-            subTasks.put(subTask.getId(), subTask);
-            Epic saveEpic = epics.get(epic.getId());
-            saveEpic.getSubTasks().add(subTask);
-            saveEpic.updateStatus();
-            epics.put(saveEpic.getId(), saveEpic);
-            return subTask;
-        }
-    }
+
     public SubTask updateSubTask (SubTask subTask) {
         SubTask saved = subTasks.get(subTask.getId());
         saved.setName(subTask.getName());
