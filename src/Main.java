@@ -1,15 +1,15 @@
-import service.TaskManager;
+import service.InMemoryTaskManager;
 import model.Task;
 import model.SubTask;
 import model.Epic;
 import model.Status;
-
-import java.net.Socket;
+import service.Managers;
+import service.TaskManager;
 
 public class Main {
 
     public static void main(String[] args) {
-        TaskManager taskManager = new TaskManager();
+        TaskManager taskManager = Managers.getDefault();
         System.out.println("Проверка функций трекера задач:");
         System.out.println();
         System.out.println("Задачи:");
@@ -106,5 +106,10 @@ public class Main {
         System.out.println(taskManager.getAllEpic());
         System.out.println("Вывод всех подзадач:");
         System.out.println(taskManager.getAllSubTask());
+        for (int i = 0; i < 15; i++) {
+            System.out.println(taskManager.getEpic(7));
+        }
+        System.out.println(taskManager.getEpic(8));
+        System.out.println(taskManager.getHistoryManager().getAll());
     }
 }

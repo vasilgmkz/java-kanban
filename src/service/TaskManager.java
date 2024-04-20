@@ -3,123 +3,48 @@ package service;
 import model.Epic;
 import model.SubTask;
 import model.Task;
-import java.util.Iterator;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
 
-public class TaskManager {
-    private  int seq = 0;
-    private HashMap<Integer, Task> tasks;
-    private HashMap<Integer, Epic> epics;
-    private HashMap<Integer, SubTask> subTasks;
+public interface TaskManager {
+    Task createTask(Task task);
 
-    public TaskManager() {
-        this.tasks = new HashMap<>();
-        this.epics = new HashMap<>();
-        this. subTasks = new HashMap<>();
-    }
-    private int generateId() {
-        return ++seq;
-    }
-    public Task createTask(Task task) {
-        task.setId(generateId());
-        tasks.put(task.getId(), task);
-        return task;
-    }
-    public Task getTask(int id) {
-        return tasks.get(id);
-    }
-    public void updateTask (Task task) {
-        tasks.put(task.getId(), task);
-    }
-    public ArrayList<Task> getAllTask() {
-        return new ArrayList<>(tasks.values());
-    }
-    public void deleteTask(int id) {
-        tasks.remove(id);
-    }
-    public void clearTask () {
-        tasks.clear();
-    }
-    public ArrayList<SubTask> getAllSubTask() {
-        return new ArrayList<>(subTasks.values());
-    }
-    public void clearSubTask () {
-        subTasks.clear();
-        for (Epic epic: epics.values()) {
-            epic.getSubTasks().clear();
-            epic.updateStatus();
-        }
-    }
-    public SubTask getSubTask (int id) {
-        return subTasks.get(id);
-    }
-    public SubTask createSubTask (SubTask subTask) {
-            subTask.setId(generateId());
-            subTasks.put(subTask.getId(), subTask);
-            Epic saveEpic = epics.get(subTask.getEpic().getId());
-            if (saveEpic == null) {
-                return null;
-            }
-            else {
-                saveEpic.getSubTasks().add(subTask);
-                saveEpic.updateStatus();
-                epics.put(saveEpic.getId(), saveEpic);
-                return subTask;
-            }
-        }
+    Task getTask(int id);
 
-    public SubTask updateSubTask (SubTask subTask) {
-        SubTask saved = subTasks.get(subTask.getId());
-        saved.setName(subTask.getName());
-        saved.setStatus(subTask.getStatus());
-        saved.setDescription(subTask.getDescription());
-        subTasks.put(saved.getId(), saved);
-        epics.get(saved.getEpic().getId()).updateStatus();
-        return saved;
-    }
+    void updateTask(Task task);
 
-    public void deleteSubTask (SubTask subTask) {
-        SubTask delSubTask = subTasks.remove(subTask.getId());
-        Epic delSubTaskinEpic = epics.get(delSubTask.getEpic().getId());
-        delSubTaskinEpic.getSubTasks().remove(delSubTask);
-        delSubTaskinEpic.updateStatus();
-        epics.put(delSubTaskinEpic.getId(), delSubTaskinEpic);
-    }
+    ArrayList<Task> getAllTask();
 
-    public void updateEpic (Epic epic) {
-        Epic saved = epics.get(epic.getId());
-        saved.setName(epic.getName());
-        saved.setDescription(epic.getDescription());
-        epics.put(epic.getId(), saved);
-    }
+    void deleteTask(int id);
 
-    public Epic createEpic (Epic epic) {
-        epic.setId(generateId());
-        epics.put(epic.getId(), epic);
-        return epic;
-    }
+    void clearTask();
 
-    public ArrayList<Epic> getAllEpic() {
-        return new ArrayList<>(epics.values());
-    }
+    ArrayList<SubTask> getAllSubTask();
 
-    public Epic getEpic (int id) {
-        return epics.get(id);
-    }
-    public void deleteEpic (int id) {
-        Epic deleteEpic = epics.remove(id);
-        for (SubTask subTask : deleteEpic.getSubTasks()) {
-            subTasks.remove(subTask.getId());
-        }
-    }
+    void clearSubTask();
 
-    public ArrayList<SubTask> listSubTasksEpic (int id) {
-        return epics.get(id).getSubTasks();
-    }
-    public void clearEpic () {
-        clearSubTask ();
-        epics.clear();
-    }
+    SubTask getSubTask(int id);
+
+    SubTask createSubTask(SubTask subTask);
+
+    SubTask updateSubTask(SubTask subTask);
+
+    void deleteSubTask(SubTask subTask);
+
+    void updateEpic(Epic epic);
+
+    Epic createEpic(Epic epic);
+
+    ArrayList<Epic> getAllEpic();
+
+    Epic getEpic(int id);
+
+    void deleteEpic(int id);
+
+    ArrayList<SubTask> listSubTasksEpic(int id);
+
+    void clearEpic();
+    HistoryManager getHistoryManager();
+
 }
