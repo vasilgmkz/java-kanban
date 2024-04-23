@@ -1,4 +1,3 @@
-import service.InMemoryTaskManager;
 import model.Task;
 import model.SubTask;
 import model.Epic;
@@ -110,6 +109,6 @@ public class Main {
             System.out.println(taskManager.getEpic(7));
         }
         System.out.println(taskManager.getEpic(8));
-        System.out.println(taskManager.getHistoryManager().getAll());
+        System.out.println(taskManager.getHistory());
     }
 }

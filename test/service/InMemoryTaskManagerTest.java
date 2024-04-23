@@ -8,8 +8,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -32,8 +30,8 @@ class InMemoryTaskManagerTest {
     @Test
     void shouldGetHistoryManager() {
         Task task = inMemoryTaskManager.getTask(1);//Просмотрели одну задачу
-        assertEquals(task.getId(), inMemoryTaskManager.getHistoryManager().getAll().get(0).getId(), "id должны совпадать");
-        assertEquals(1, inMemoryTaskManager.getHistoryManager().getAll().size(), "размер должен быть 1");
+        assertEquals(task.getId(), inMemoryTaskManager.getHistory().get(0).getId(), "id должны совпадать");
+        assertEquals(1, inMemoryTaskManager.getHistory().size(), "размер должен быть 1");
     }
 
     @DisplayName("Создание задачи")

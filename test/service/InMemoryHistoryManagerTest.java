@@ -8,7 +8,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DisplayName("Менеджер историй")
@@ -35,10 +34,10 @@ class InMemoryHistoryManagerTest {
         inMemoryHistoryManager.add(epic);
         inMemoryHistoryManager.add(subTask);
         inMemoryHistoryManager.add(subTask1);
-        assertEquals(10, inMemoryHistoryManager.getAll().size(), "размер должен быть равен 10");
-        assertEquals("task", inMemoryHistoryManager.getAll().get(7).getName(), "7 должен быть task");
-        assertEquals("epic", inMemoryHistoryManager.getAll().get(8).getName(), "8 должен быть epic");
-        assertEquals("subTask", inMemoryHistoryManager.getAll().get(9).getName(), "9 должен быть subTask");
+        assertEquals(10, inMemoryHistoryManager.getHistory().size(), "размер должен быть равен 10");
+        assertEquals("task", inMemoryHistoryManager.getHistory().get(7).getName(), "7 должен быть task");
+        assertEquals("epic", inMemoryHistoryManager.getHistory().get(8).getName(), "8 должен быть epic");
+        assertEquals("subTask", inMemoryHistoryManager.getHistory().get(9).getName(), "9 должен быть subTask");
     }
 
     @DisplayName("Получение истории задач")
@@ -47,6 +46,6 @@ class InMemoryHistoryManagerTest {
         inMemoryHistoryManager.add(task);
         inMemoryHistoryManager.add(epic);
         inMemoryHistoryManager.add(subTask);
-        assertEquals(3, inMemoryHistoryManager.getAll().size(), "должно быть 3 задачи");
+        assertEquals(3, inMemoryHistoryManager.getHistory().size(), "должно быть 3 задачи");
     }
 }
