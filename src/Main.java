@@ -1,7 +1,7 @@
-import model.Task;
-import model.SubTask;
 import model.Epic;
 import model.Status;
+import model.SubTask;
+import model.Task;
 import service.Managers;
 import service.TaskManager;
 
@@ -13,9 +13,9 @@ public class Main {
         System.out.println();
         System.out.println("Задачи:");
         System.out.println("Создание трех задач...");
-        Task task1 = taskManager.createTask(new Task("task1" , Status.NEW, "task1"));
-        Task task2 = taskManager.createTask(new Task("task2" , Status.DONE, "task2"));
-        Task task3 = taskManager.createTask(new Task("task3" , Status.IN_PROGRESS, "task3"));
+        Task task1 = taskManager.createTask(new Task("task1", Status.NEW, "task1"));
+        Task task2 = taskManager.createTask(new Task("task2", Status.DONE, "task2"));
+        Task task3 = taskManager.createTask(new Task("task3", Status.IN_PROGRESS, "task3"));
         System.out.println("Вывод всех задач:");
         System.out.println(taskManager.getAllTask());
         System.out.println("Вывод задачи по id 3:");
