@@ -18,6 +18,7 @@ class InMemoryHistoryManagerTest {
     Epic epic;
     SubTask subTask;
     SubTask subTask1;
+
     @BeforeEach
     void init() {
         taskManager = Managers.getDefault();
