@@ -13,11 +13,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @DisplayName("Менеджер историй")
 class InMemoryHistoryManagerTest {
     TaskManager taskManager;
-    InMemoryHistoryManager inMemoryHistoryManager;
+
     Task task;
     Epic epic;
     SubTask subTask;
-    SubTask subTask1;
+
 
     @BeforeEach
     void init() {
@@ -63,6 +63,6 @@ class InMemoryHistoryManagerTest {
         assertEquals(6, taskManager.getHistory().size(), "размер должен быть равен 6");
         taskManager.deleteEpic(2);
         assertEquals(4, taskManager.getHistory().size(), "размер должен быть равен 4");
-        assertEquals("task", taskManager.getHistory().get(0).getName(), "имя должно быть subTask");
+        assertEquals("task", taskManager.getHistory().getFirst().getName(), "имя должно быть subTask");
     }
 }
