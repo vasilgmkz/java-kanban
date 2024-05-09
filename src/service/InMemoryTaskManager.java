@@ -169,7 +169,10 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void clearEpic() {
-        clearSubTask();
+        for (int id : subTasks.keySet()) {
+            historyManager.remove(id);
+        }
+        subTasks.clear();
         for (int id : epics.keySet()) {
             historyManager.remove(id);
         }

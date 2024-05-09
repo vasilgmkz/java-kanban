@@ -20,12 +20,7 @@ public class Main {
         System.out.println(taskManager.getAllTask());
         System.out.println("Вывод задачи по id 3:");
         System.out.println(taskManager.getTask(1));
-        System.out.println(taskManager.getTask(1));
-        System.out.println(taskManager.getTask(1));
         System.out.println(taskManager.getTask(2));
-        System.out.println(taskManager.getTask(2));
-        System.out.println(taskManager.getTask(2));
-        System.out.println(taskManager.getTask(3));
         System.out.println(taskManager.getTask(3));
         System.out.println(taskManager.getTask(1));
         System.out.println("Вывод истории:");
