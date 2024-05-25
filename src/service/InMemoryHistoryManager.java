@@ -78,3 +78,4 @@ public class InMemoryHistoryManager implements HistoryManager {
         last = newNode;
     }
 }
+

@@ -1,7 +1,3 @@
-import model.Epic;
-import model.Status;
-import model.SubTask;
-import model.Task;
 import service.Managers;
 import service.TaskManager;
 
@@ -9,7 +5,21 @@ public class Main {
 
     public static void main(String[] args) {
         TaskManager taskManager = Managers.getDefault();
-        System.out.println("Проверка функций трекера задач:");
+        //Epic epic1 = taskManager.createEpic(new Epic("Epic1", "Epic1")); //id4SubTask subTask2 = taskManager.createSubTask(new SubTask("subTask15", Status.IN_PROGRESS, "subTask15", taskManager.getEpic(15)));
+        //Epic epic1 = taskManager.createEpic(new Epic("Epic1", "Epic1")); //id4
+        //Epic epic2 = taskManager.createEpic(new Epic("Epic2", "Epic2")); //id5
+        //Epic epic3 = taskManager.createEpic(new Epic("Epic3", "Epic3")); //id6
+        //SubTask subTask1 = taskManager.createSubTask(new SubTask("subTask1", Status.DONE, "subTask1", taskManager.getEpic(12)));
+        //SubTask subTask2 = taskManager.createSubTask(new SubTask("subTask1", Status.DONE, "subTask1", taskManager.getEpic(13)));
+        // SubTask subTask3 = taskManager.createSubTask(new SubTask("subTask1", Status.DONE, "subTask1", taskManager.getEpic(14)));
+        //Task task1 = taskManager.createTask(new Task("task1", Status.NEW, "task1"));
+        //Task task2 = taskManager.createTask(new Task("task2", Status.DONE, "task2"));
+        //Task task3 = taskManager.createTask(new Task("task3", Status.IN_PROGRESS, "task3"));
+        //taskManager.deleteTask(6);
+        //taskManager.clearSubTask();
+        //taskManager.deleteSubTask(taskManager.getSubTask(6));
+        //System.out.println(taskManager.getAllSubTask());
+        /*System.out.println("Проверка функций трекера задач:");
         System.out.println();
         System.out.println("Задачи:");
         System.out.println("Создание трех задач...");
@@ -42,11 +52,13 @@ public class Main {
         SubTask subTask1 = taskManager.createSubTask(new SubTask("subTask1", Status.IN_PROGRESS, "subTask1", epic1)); //id7
         SubTask subTask2 = taskManager.createSubTask(new SubTask("subTask2", Status.NEW, "subTask2", epic3)); //id8
         System.out.println(taskManager.getSubTask(7));
-
         System.out.println("Вывод истории:");
         System.out.println(taskManager.getHistory());
-        taskManager.deleteEpic(4);
+        //taskManager.deleteEpic(4);
         System.out.println("Вывод истории:");
         System.out.println(taskManager.getHistory());
+        taskManager.deleteSubTask(subTask2);
+        Epic epic4 = taskManager.createEpic(new Epic("Epic4", "Epic4")); //id6
+        taskManager.deleteEpic(6);*/
     }
 }

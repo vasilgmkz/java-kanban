@@ -4,6 +4,7 @@ import java.util.Objects;
 
 public class SubTask extends Task {
     private Epic epic;
+    private int epicId;
 
     public SubTask(String name, Status status, String description, Epic epic) {
         super(name, status, description);
@@ -14,13 +15,39 @@ public class SubTask extends Task {
         super(id, name, status, description);
     }
 
+    public SubTask(int id, String name, Status status, String description, Epic epic) {
+        super(id, name, status, description);
+        this.epic = epic;
+    }
+
+    public SubTask(int id, String name, Status status, String description, int epicId) {
+        super(id, name, status, description);
+        this.epicId = epicId;
+    }
+
     @Override
     public Epic getEpic() {
         return epic;
     }
 
+    @Override
+    public Integer getEpicId() {
+        if (epic != null) {
+            return epic.getId();
+        } else {
+            return epicId;
+        }
+    }
+
+
+
     public void setEpic(Epic epic) {
         this.epic = epic;
+    }
+
+    @Override
+    public TaskType getType() {
+        return TaskType.SUBTASK;
     }
 
     @Override
