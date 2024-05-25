@@ -8,8 +8,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 @DisplayName("Менеджер задач")
 class InMemoryTaskManagerTest {
@@ -20,7 +20,7 @@ class InMemoryTaskManagerTest {
 
     @BeforeEach
     void init() {
-        inMemoryTaskManager = Managers.getDefault();
+        inMemoryTaskManager = new InMemoryTaskManager();
         inMemoryTaskManager.createTask(new Task("task1", Status.DONE, "task1"));//id1
         epic1 = inMemoryTaskManager.createEpic(new Epic("epic1", "epic1"));//id2
         subTask1= inMemoryTaskManager.createSubTask(new SubTask("subTask1", Status.IN_PROGRESS, "subTask1", epic1));//id3

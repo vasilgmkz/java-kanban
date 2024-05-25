@@ -21,7 +21,7 @@ class InMemoryHistoryManagerTest {
 
     @BeforeEach
     void init() {
-        taskManager = Managers.getDefault();
+        taskManager = new InMemoryTaskManager();
         task = taskManager.createTask(new Task("task", Status.NEW, "task")); //1
         epic = taskManager.createEpic(new Epic("epic", "epic")); //2
         subTask = taskManager.createSubTask(new SubTask("subTask", Status.NEW, "subTask", epic)); //3
