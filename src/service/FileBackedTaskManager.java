@@ -14,8 +14,8 @@ import java.util.List;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
 
-    String file;
-    TaskConverter taskConverter = new TaskConverter();
+    private final String file;
+    private final TaskConverter taskConverter = new TaskConverter();
 
     FileBackedTaskManager(String file) {
         super();
@@ -113,11 +113,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 }
             }
         } catch (IOException e) {
-            try {
-                throw new ManagerSaveException("Ошибка сохранения", e);
-            } catch (ManagerSaveException ex) {
-                System.out.println(ex.getDetailMessage());
-            }
+            throw new ManagerSaveException(e.getMessage());
         }
     }
 

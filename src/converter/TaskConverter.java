@@ -1,9 +1,6 @@
 package converter;
 
-import model.Epic;
-import model.Status;
-import model.SubTask;
-import model.Task;
+import model.*;
 
 public class TaskConverter {
 
@@ -17,16 +14,20 @@ public class TaskConverter {
 
     public static Task fromString(String value) {
         String[] task = value.split(",");
-        if (task[1].equals("TASK")) {
-            return new Task(Integer.parseInt(task[0]), task[2], Status.valueOf(task[3]), task[4]);
-        } else if (task[1].equals("EPIC")) {
-            return new Epic(Integer.parseInt(task[0]), task[2], Status.valueOf(task[3]), task[4]);
-        } else if (task[1].equals("SUBTASK")) {
-            return new SubTask(Integer.parseInt(task[0]), task[2], Status.valueOf(task[3]),
+        final int id = Integer.parseInt(task[0]);
+        final TaskType type = TaskType.valueOf(task[1]);
+        if (type.equals(TaskType.TASK)) {
+            return new Task(id, task[2], Status.valueOf(task[3]), task[4]);
+        } else if (type.equals(TaskType.EPIC)) {
+            return new Epic(id, task[2], Status.valueOf(task[3]), task[4]);
+        } else if (type.equals(TaskType.SUBTASK)) {
+            return new SubTask(id, task[2], Status.valueOf(task[3]),
                     task[4], Integer.parseInt(task[5]));
         } else {
             return null;
         }
     }
+
+
 }
 

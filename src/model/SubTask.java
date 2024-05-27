@@ -34,11 +34,9 @@ public class SubTask extends Task {
     public Integer getEpicId() {
         if (epic != null) {
             return epic.getId();
-        } else {
-            return epicId;
         }
+        return epicId;
     }
-
 
 
     public void setEpic(Epic epic) {
