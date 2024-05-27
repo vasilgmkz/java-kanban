@@ -16,6 +16,12 @@ public class Epic extends Task {
         updateStatus();
     }
 
+    public Epic(int id, String name, Status status, String description) {
+        super(id, name, status, description);
+    }
+
+
+
     public ArrayList<SubTask> getSubTasks() {
         return subTasks;
     }
@@ -66,6 +72,11 @@ public class Epic extends Task {
         } else {
             return false;
         }
+    }
+
+    @Override
+    public TaskType getType() {
+        return TaskType.EPIC;
     }
 
     @Override

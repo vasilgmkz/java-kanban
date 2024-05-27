@@ -25,6 +25,10 @@ public class Task {
         return null;
     }
 
+    public Integer getEpicId() {
+        return null;
+    }
+
 
     public int getId() {
         return id;
@@ -56,6 +60,10 @@ public class Task {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public TaskType getType() {
+        return TaskType.TASK;
     }
 
     @Override
