@@ -1,6 +1,6 @@
 id,type,name,status,description,epic
-12,EPIC,Epic3,DONE,Epic3,null
-15,SUBTASK,subTask1,DONE,subTask1,12
+12,EPIC,dfgfgdgd,NEW,fdgfgf,null
+15,SUBTASK,15,NEW,15,12
 13,EPIC,Epic1,DONE,Epic1,null
 16,SUBTASK,subTask1ddd111,DONE,subTask1111ddd,13
 14,EPIC,Epic2,DONE,Epic2,null

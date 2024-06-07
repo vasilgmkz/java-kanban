@@ -1,5 +1,6 @@
 package service;
 
+import exception.NotFoundException;
 import model.Epic;
 import model.SubTask;
 import model.Task;
@@ -39,13 +40,28 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public Task getTask(int id) {
-        historyManager.add(tasks.get(id));
-        return tasks.get(id);
+        try {
+            if (tasks.get(id) == null) {
+                throw new NotFoundException(new StringBuilder("Задача с id " + id + " не найдена!"));
+            }
+            historyManager.add(tasks.get(id));
+            return tasks.get(id);
+        } catch (NotFoundException e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
     }
 
     @Override
     public void updateTask(Task task) {
-        tasks.put(task.getId(), task);
+        try {
+            if (tasks.get(task.getId()) == null) {
+                throw new NotFoundException(new StringBuilder("Задача с id " + task.getId() + " не найдена!"));
+            }
+            tasks.put(task.getId(), task);
+        } catch (NotFoundException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     @Override
@@ -86,8 +102,16 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public SubTask getSubTask(int id) {
-        historyManager.add(subTasks.get(id));
-        return subTasks.get(id);
+        try {
+            if (subTasks.get(id) == null) {
+                throw new NotFoundException(new StringBuilder("Подзадача с id " + id + " не найдена!"));
+            }
+            historyManager.add(subTasks.get(id));
+            return subTasks.get(id);
+        } catch (NotFoundException e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
     }
 
     @Override
@@ -107,14 +131,27 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public SubTask updateSubTask(SubTask subTask) {
-        SubTask saved = subTasks.get(subTask.getId());
-        saved.setName(subTask.getName());
-        saved.setStatus(subTask.getStatus());
-        saved.setDescription(subTask.getDescription());
-        subTasks.put(saved.getId(), saved);
-        epics.get(saved.getEpic().getId()).updateStatus();
-        return saved;
+        try {
+            if (subTasks.get(subTask.getId()) == null) {
+                throw new NotFoundException(new StringBuilder("Подзадача с id " + subTask.getId() + " не найдена!"));
+            }
+            if (epics.get(subTask.getEpicId()) == null) {
+                throw new NotFoundException(new StringBuilder("Эпик с id " + subTask.getEpicId() + " не найден!"));
+            }
+            SubTask saved = subTasks.get(subTask.getId());
+            saved.setName(subTask.getName());
+            saved.setStatus(subTask.getStatus());
+            saved.setDescription(subTask.getDescription());
+            subTasks.put(saved.getId(), saved);
+            epics.get(saved.getEpic().getId()).updateStatus();
+            return saved;
+        } catch (NotFoundException e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
     }
+
+
 
     @Override
     public void deleteSubTask(SubTask subTask) {
@@ -128,10 +165,18 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void updateEpic(Epic epic) {
-        Epic saved = epics.get(epic.getId());
-        saved.setName(epic.getName());
-        saved.setDescription(epic.getDescription());
-        epics.put(epic.getId(), saved);
+        try {
+            if (epics.get(epic.getId()) == null) {
+                throw new NotFoundException(new StringBuilder("Эпик с id " + epic.getId() + " не найден!"));
+            }
+            Epic saved = epics.get(epic.getId());
+            saved.setName(epic.getName());
+            saved.setDescription(epic.getDescription());
+            epics.put(epic.getId(), saved);
+        } catch (NotFoundException e) {
+            System.out.println(e.getMessage());
+        }
+
     }
 
     @Override
@@ -148,9 +193,19 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public Epic getEpic(int id) {
-        historyManager.add(epics.get(id));
-        return epics.get(id);
+        try {
+            if (epics.get(id) == null) {
+                throw new NotFoundException(new StringBuilder("Эпик с id " + id + " не найден!"));
+            }
+            historyManager.add(epics.get(id));
+            return epics.get(id);
+        } catch (NotFoundException e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
     }
+
+
 
     @Override
     public void deleteEpic(int id) {
