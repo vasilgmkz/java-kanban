@@ -102,7 +102,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     @Override
     public void save() {
         try (Writer fileWriter = new FileWriter(file, StandardCharsets.UTF_8)) {
-            fileWriter.write("id,type,name,status,description,epic\n");
+            fileWriter.write("id,type,name,status,description,epic,startTime,duration\n");
             for (Task task : tasks.values()) {
                 fileWriter.write(taskConverter.toString(task) + "\n");
             }
@@ -126,6 +126,10 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             for (int i = 1; i < list.size(); i++) {
                 Task task = TaskConverter.fromString(list.get(i));
                 if (task.getType().equals(TaskType.TASK)) {
+                    if (checkTaskTime(task)) {
+                        prioritizedTasks.add(task);
+
+                    }
                     tasks.put(task.getId(), task);
                 } else if (task.getType().equals(TaskType.EPIC)) {
                     Epic epic = (Epic) task;
@@ -133,8 +137,12 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 } else if (task.getType().equals(TaskType.SUBTASK)) {
                     SubTask subTask = (SubTask) task;
                     subTask.setEpic(epics.get(subTask.getEpicId()));
+                    if (checkTaskTime(subTask)) {
+                        prioritizedTasks.add(subTask);
+                    }
                     subTasks.put(subTask.getId(), subTask);
                     epics.get(subTask.getEpicId()).getSubTasks().add(subTask);
+                    epics.get(subTask.getEpicId()).updateStatus();
                 }
                 if (task.getId() > seq) {
                     seq = task.getId();

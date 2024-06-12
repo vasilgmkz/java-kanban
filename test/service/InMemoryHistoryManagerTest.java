@@ -8,6 +8,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DisplayName("Менеджер историй")
@@ -22,9 +25,9 @@ class InMemoryHistoryManagerTest {
     @BeforeEach
     void init() {
         taskManager = new InMemoryTaskManager();
-        task = taskManager.createTask(new Task("task", Status.NEW, "task")); //1
+        task = taskManager.createTask(new Task("task", Status.NEW, "task", LocalDateTime.parse("2024-06-12T20:30"), Duration.ofMinutes(15))); //1
         epic = taskManager.createEpic(new Epic("epic", "epic")); //2
-        subTask = taskManager.createSubTask(new SubTask("subTask", Status.NEW, "subTask", epic)); //3
+        subTask = taskManager.createSubTask(new SubTask("subTask", Status.NEW, "subTask", epic, LocalDateTime.parse("2024-06-12T20:50"), Duration.ofMinutes(15))); //3
     }
 
     @DisplayName("Добавление задач")
@@ -51,9 +54,9 @@ class InMemoryHistoryManagerTest {
     @DisplayName("Удаление задач")
     @Test
     void shouldDeleteTask() {
-        Task task1 = taskManager.createTask(new Task("task1", Status.NEW, "task1")); //4
+        Task task1 = taskManager.createTask(new Task("task1", Status.NEW, "task1", LocalDateTime.parse("2024-06-12T19:30"), Duration.ofMinutes(15))); //4
         Epic epic1 = taskManager.createEpic(new Epic("epic1", "epic1")); //5
-        SubTask subTask1 = taskManager.createSubTask(new SubTask("subTask1", Status.NEW, "subTask1", epic1)); //6
+        SubTask subTask1 = taskManager.createSubTask(new SubTask("subTask1", Status.NEW, "subTask1", epic1, LocalDateTime.parse("2024-06-12T19:50"), Duration.ofMinutes(15))); //6
         taskManager.getEpic(2);
         taskManager.getSubTask(3);
         taskManager.getTask(1);

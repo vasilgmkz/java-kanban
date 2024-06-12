@@ -1,5 +1,7 @@
 package model;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Task {
@@ -8,17 +10,45 @@ public class Task {
     protected Status status;
     protected String description;
 
-    public Task(int id, String name, Status status, String description) {
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public Duration getDuration() {
+        return duration;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public void setDuration(Duration duration) {
+        this.duration = duration;
+    }
+
+    protected LocalDateTime startTime;
+    protected Duration duration;
+
+
+    public Task(int id, String name, Status status, String description, LocalDateTime startTime, Duration duration) {
         this.id = id;
         this.name = name;
         this.status = status;
         this.description = description;
+        this.startTime = startTime;
+        this.duration = duration;
     }
 
-    public Task(String name, Status status, String description) {
+    public Task(String name, Status status, String description, LocalDateTime startTime, Duration duration) {
         this.name = name;
         this.status = status;
         this.description = description;
+        this.startTime = startTime;
+        this.duration = duration;
+    }
+
+    public LocalDateTime endTime() {
+        return startTime.plus(duration);
     }
 
     public Epic getEpic() {
@@ -71,7 +101,7 @@ public class Task {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Task task = (Task) o;
-        return id == task.id;
+        return id == task.getId();
     }
 
     @Override
@@ -86,6 +116,8 @@ public class Task {
                 ", name='" + name + '\'' +
                 ", status=" + status +
                 ", description='" + description + '\'' +
+                ", startTime='" + startTime + '\'' +
+                ", duration='" + duration + '\'' +
                 '}';
     }
 }
