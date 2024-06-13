@@ -14,7 +14,7 @@ public class InMemoryTaskManager implements TaskManager {
     protected HashMap<Integer, Epic> epics;
     protected HashMap<Integer, SubTask> subTasks;
     private final HistoryManager historyManager = Managers.getDefaultHistory();
-    protected TreeSet<Task> prioritizedTasks = new TreeSet<>(Comparator.comparing(Task::getStartTime));
+    protected TreeSet<Task> prioritizedTasks = new TreeSet<>(Comparator.comparing(Task::getStartTime, Comparator.nullsLast(Comparator.naturalOrder())).thenComparing(Task::getId));
 
     public InMemoryTaskManager() {
         this.tasks = new HashMap<>();
@@ -25,8 +25,6 @@ public class InMemoryTaskManager implements TaskManager {
     private int generateId() {
         return ++seq;
     }
-
-    public Comparator<Task> comparator = Comparator.comparing(Task::getId);
 
     @Override
     public TreeSet<Task> getPrioritizedTasks() {
@@ -40,50 +38,36 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public Task createTask(Task task) {
-        try {
-            task.setId(generateId());
-            if (checkTaskTime(task)) {
-                prioritizedTasks.add(task);
-            }
-            tasks.put(task.getId(), task);
-            return task;
-        } catch (ValidationException e) {
-            System.out.println(e.getMessage());
+        task.setId(generateId());
+        if (checkTaskTime(task)) {
+            prioritizedTasks.add(task);
         }
-        return null;
+        tasks.put(task.getId(), task);
+        return task;
     }
 
     @Override
     public Task getTask(int id) {
-        try {
-            if (tasks.get(id) == null) {
-                throw new NotFoundException(new StringBuilder("Задача с id " + id + " не найдена!"));
-            }
-            historyManager.add(tasks.get(id));
-            return tasks.get(id);
-        } catch (NotFoundException e) {
-            System.out.println(e.getMessage());
-            return null;
+        if (tasks.get(id) == null) {
+            throw new NotFoundException(new StringBuilder("Задача с id " + id + " не найдена!"));
         }
+        historyManager.add(tasks.get(id));
+        return tasks.get(id);
     }
 
     @Override
     public void updateTask(Task task) {
-        try {
-            if (tasks.get(task.getId()) == null) {
-                throw new NotFoundException(new StringBuilder("Задача с id " + task.getId() + " не найдена!"));
-            }
-            if (checkTaskTime(task)) {
-                prioritizedTasks.remove(tasks.get(task.getId()));
-                prioritizedTasks.add(task);
-            }
-            if (task.getStartTime() == null || task.getDuration() == null) {
-                prioritizedTasks.remove(tasks.get(task.getId()));
-            }
-            tasks.put(task.getId(), task);
-        } catch (NotFoundException | ValidationException e) {
-            System.out.println(e.getMessage());
+        if (tasks.get(task.getId()) == null) {
+            throw new NotFoundException(new StringBuilder("Задача с id " + task.getId() + " не найдена!"));
         }
+        if (checkTaskTime(task)) {
+            prioritizedTasks.remove(tasks.get(task.getId()));
+            prioritizedTasks.add(task);
+        }
+        if (task.getStartTime() == null || task.getDuration() == null) {
+            prioritizedTasks.remove(tasks.get(task.getId()));
+        }
+        tasks.put(task.getId(), task);
     }
 
     @Override
@@ -94,16 +78,11 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void deleteTask(int id) {
         prioritizedTasks.remove(tasks.remove(id));
-        //tasks.remove(id);
         historyManager.remove(id);
     }
 
     @Override
     public void clearTask() {
-        /*for (int id : tasks.keySet()) {
-            historyManager.remove(id);
-            prioritizedTasks.remove(tasks.get(id));
-        }*/
         tasks.keySet().stream().peek(id -> historyManager.remove(id)).forEach(id -> prioritizedTasks.remove(tasks.get(id)));
         tasks.clear();
     }

@@ -227,11 +227,15 @@ class InMemoryTaskManagerTest {
         assertEquals(3, inMemoryTaskManager.getPrioritizedTasks().size(), "размер должен быть 3");
         assertEquals("subTask2", inMemoryTaskManager.getPrioritizedTasks().getFirst().getName(), "имя должно быть subTask2");
         inMemoryTaskManager.createSubTask(new SubTask("subTask3", Status.IN_PROGRESS, "subTask3", epic1, null, Duration.ofMinutes(15)));
-        inMemoryTaskManager.createSubTask(new SubTask("subTask4", Status.IN_PROGRESS, "subTask4", epic1, LocalDateTime.parse("2024-06-12T19:40"), null));
+        inMemoryTaskManager.createSubTask(new SubTask("subTask4", Status.IN_PROGRESS, "subTask4", epic1, LocalDateTime.parse("2024-06-12T19:50"), null));
+        inMemoryTaskManager.getAllSubTask().stream().forEach(n -> System.out.println(n));
+        inMemoryTaskManager.getPrioritizedTasks().stream().forEach(n -> System.out.println(n));
         assertEquals(3, inMemoryTaskManager.getPrioritizedTasks().size(), "размер должен быть 3");
         inMemoryTaskManager.updateSubTask(new SubTask(6, "subTask4", Status.IN_PROGRESS, "subTask4", 2, LocalDateTime.parse("2024-06-12T18:50"), Duration.ofMinutes(15)));
         assertEquals(4, inMemoryTaskManager.getPrioritizedTasks().size(), "размер должен быть 4");
         assertEquals("subTask4", inMemoryTaskManager.getPrioritizedTasks().getFirst().getName(), "имя должно быть subTask4");
+        inMemoryTaskManager.getAllSubTask().stream().forEach(n -> System.out.println(n));
+        inMemoryTaskManager.getPrioritizedTasks().stream().forEach(n -> System.out.println(n));
     }
 }
 
