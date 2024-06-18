@@ -6,6 +6,7 @@ import model.Task;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeSet;
 
 public interface TaskManager {
     Task createTask(Task task);
@@ -49,5 +50,7 @@ public interface TaskManager {
     List<Task> getHistory();
 
     void save();
+
+    public TreeSet<Task> getPrioritizedTasks();
 
 }

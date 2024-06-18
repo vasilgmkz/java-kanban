@@ -8,6 +8,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
@@ -21,9 +24,9 @@ class InMemoryTaskManagerTest {
     @BeforeEach
     void init() {
         inMemoryTaskManager = new InMemoryTaskManager();
-        inMemoryTaskManager.createTask(new Task("task1", Status.DONE, "task1"));//id1
+        inMemoryTaskManager.createTask(new Task("task1", Status.DONE, "task1", LocalDateTime.parse("2024-06-12T20:30"), Duration.ofMinutes(15)));//id1
         epic1 = inMemoryTaskManager.createEpic(new Epic("epic1", "epic1"));//id2
-        subTask1= inMemoryTaskManager.createSubTask(new SubTask("subTask1", Status.IN_PROGRESS, "subTask1", epic1));//id3
+        subTask1 = inMemoryTaskManager.createSubTask(new SubTask("subTask1", Status.IN_PROGRESS, "subTask1", epic1, LocalDateTime.parse("2024-06-12T20:50"), Duration.ofMinutes(15)));//id3
     }
 
     @DisplayName("Получение истории задач")
@@ -37,7 +40,7 @@ class InMemoryTaskManagerTest {
     @DisplayName("Создание задачи")
     @Test
     void shouldCreateTask() {
-        inMemoryTaskManager.createTask(new Task("task2", Status.DONE, "task2"));
+        inMemoryTaskManager.createTask(new Task("task2", Status.DONE, "task2", LocalDateTime.parse("2024-06-12T19:30"), Duration.ofMinutes(15)));
         assertEquals(2, inMemoryTaskManager.getAllTask().size(), "размер должен быть 2");
         assertEquals("task2", inMemoryTaskManager.getTask(4).getName(), "имя должно быть task2");
     }
@@ -53,7 +56,7 @@ class InMemoryTaskManagerTest {
     @DisplayName("Обновление задачи")
     @Test
     void shouldUpdateTask() {
-        inMemoryTaskManager.updateTask(new Task(1, "task1NEW", Status.NEW, "task1NEW"));
+        inMemoryTaskManager.updateTask(new Task(1, "task1NEW", Status.NEW, "task1NEW", LocalDateTime.parse("2024-06-12T18:30"), Duration.ofMinutes(15)));
         Task task = inMemoryTaskManager.getTask(1);
         assertEquals("task1NEW", task.getName(), "name должено быть task1NEW");
         assertEquals(Status.NEW, task.getStatus(), "status должено быть NEW");
@@ -63,15 +66,15 @@ class InMemoryTaskManagerTest {
     @DisplayName("Получение всех задач")
     @Test
     void shouldGetAllTask() {
-        inMemoryTaskManager.createTask(new Task("task2", Status.DONE, "task2"));
-        inMemoryTaskManager.createTask(new Task("task3", Status.DONE, "task3"));
+        inMemoryTaskManager.createTask(new Task("task2", Status.DONE, "task2", LocalDateTime.parse("2024-06-12T17:30"), Duration.ofMinutes(15)));
+        inMemoryTaskManager.createTask(new Task("task3", Status.DONE, "task3", LocalDateTime.parse("2024-06-12T16:30"), Duration.ofMinutes(15)));
         assertEquals(3, inMemoryTaskManager.getAllTask().size(), "должно быть 3 задачи");
     }
 
     @DisplayName("Удаление задачи")
     @Test
     void shouldDeleteTask() {
-        inMemoryTaskManager.createTask(new Task("task2", Status.DONE, "task2"));//id4
+        inMemoryTaskManager.createTask(new Task("task2", Status.DONE, "task2", LocalDateTime.parse("2024-06-12T17:30"), Duration.ofMinutes(15)));//id4
         inMemoryTaskManager.deleteTask(1);
         assertEquals(1, inMemoryTaskManager.getAllTask().size(), "должна быть 1 задача");
         assertEquals(4, inMemoryTaskManager.getTask(4).getId(), "должен быть id4");
@@ -110,6 +113,7 @@ class InMemoryTaskManagerTest {
         assertEquals(2, epic.getId(), "id должен быть 2");
         assertEquals("epic1", epic.getName(), "name должено быть epic1");
     }
+
     @DisplayName("Получение всех эпиков")
     @Test
     void shouldGetAllEpic() {
@@ -117,6 +121,7 @@ class InMemoryTaskManagerTest {
         inMemoryTaskManager.createEpic(new Epic("epic3", "epic3"));
         assertEquals(3, inMemoryTaskManager.getAllEpic().size(), "должно быть 3 эпика");
     }
+
     @DisplayName("Удалить эпик")
     @Test
     void shouldDeleteEpic() {
@@ -126,17 +131,19 @@ class InMemoryTaskManagerTest {
         assertEquals("epic2", inMemoryTaskManager.getEpic(4).getName(), "должно быть имя epic2");
         assertEquals(0, inMemoryTaskManager.getAllSubTask().size(), "должно быть 0 подзадач");
     }
+
     @DisplayName("Получить подзадачи эпика")
     @Test
     void shouldListSubTasksEpic() {
-        SubTask subTask2 = inMemoryTaskManager.createSubTask(new SubTask("subTask2", Status.IN_PROGRESS, "subTask2", epic1));
-        SubTask subTask3 = inMemoryTaskManager.createSubTask(new SubTask("subTask3", Status.IN_PROGRESS, "subTask3", epic1));
+        SubTask subTask2 = inMemoryTaskManager.createSubTask(new SubTask("subTask2", Status.IN_PROGRESS, "subTask2", epic1, LocalDateTime.parse("2024-06-12T18:30"), Duration.ofMinutes(15)));
+        SubTask subTask3 = inMemoryTaskManager.createSubTask(new SubTask("subTask3", Status.IN_PROGRESS, "subTask3", epic1, LocalDateTime.parse("2024-06-12T17:30"), Duration.ofMinutes(15)));
         assertEquals(3, inMemoryTaskManager.listSubTasksEpic(2).size(), "должно быть 3 подзадачи у эпика");
         inMemoryTaskManager.deleteSubTask(subTask2);//удалили подзадачу 2
         inMemoryTaskManager.deleteSubTask(subTask3);//удалили подзадачу 3
         assertEquals(1, inMemoryTaskManager.listSubTasksEpic(2).size(), "должно быть 1 подзадача у эпика");
         assertEquals("subTask1", inMemoryTaskManager.listSubTasksEpic(2).get(0).getName(), "имя подзадачи должно быть subTask1");
     }
+
     @DisplayName("Удалить все эпики")
     @Test
     void shouldClearEpic() {
@@ -145,15 +152,17 @@ class InMemoryTaskManagerTest {
         assertEquals(0, inMemoryTaskManager.getAllEpic().size(), "должно быть 0 эпиков");
         assertEquals(0, inMemoryTaskManager.getAllSubTask().size(), "должно быть 0 подзадач");
     }
+
     @DisplayName("Создать подзадачу")
     @Test
     void shouldCreateSubTask() {
-        inMemoryTaskManager.createSubTask(new SubTask("subTask2", Status.IN_PROGRESS, "subTask2", epic1));
+        inMemoryTaskManager.createSubTask(new SubTask("subTask2", Status.IN_PROGRESS, "subTask2", epic1, LocalDateTime.parse("2024-06-12T18:30"), Duration.ofMinutes(15)));
         assertEquals(2, inMemoryTaskManager.getAllSubTask().size(), "должно быть 2 подзадачи");
         assertEquals(2, inMemoryTaskManager.listSubTasksEpic(2).size(), "в эпике должно быть 2 подзадачи");
-        SubTask subTaskubTask = inMemoryTaskManager.createSubTask(new SubTask("subTask3", Status.IN_PROGRESS, "subTask3", epic3));
+        SubTask subTaskubTask = inMemoryTaskManager.createSubTask(new SubTask("subTask3", Status.IN_PROGRESS, "subTask3", epic3, LocalDateTime.parse("2024-06-12T17:30"), Duration.ofMinutes(15)));
         assertNull(subTaskubTask, "должен быть null");
     }
+
     @DisplayName("Получить подзадачу")
     @Test
     void shouldGetSubTask() {
@@ -163,10 +172,11 @@ class InMemoryTaskManagerTest {
         assertEquals(Status.IN_PROGRESS, subTask.getStatus());
         assertEquals(2, inMemoryTaskManager.getSubTask(3).getEpic().getId());
     }
+
     @DisplayName("Обновить подзадачу")
     @Test
     void shouldUpdateSubTask() {
-        inMemoryTaskManager.updateSubTask(new SubTask(3, "subTask1NEW", Status.DONE, "subTask1NEW"));
+        inMemoryTaskManager.updateSubTask(new SubTask(3, "subTask1NEW", Status.DONE, "subTask1NEW", 2, LocalDateTime.parse("2024-06-12T17:00"), Duration.ofMinutes(15)));
         SubTask subTask = inMemoryTaskManager.getSubTask(3);
         assertEquals("subTask1NEW", subTask.getName(), "имя должно быть subTask1NEW");
         assertEquals("subTask1NEW", subTask.getDescription(), "комментарий должен быть subTask1NEW");
@@ -174,30 +184,58 @@ class InMemoryTaskManagerTest {
         assertEquals(Status.DONE, inMemoryTaskManager.getEpic(2).getStatus(), "статус эпика должен быть Status.DONE");
         assertEquals("subTask1NEW", inMemoryTaskManager.getEpic(2).getSubTasks().get(0).getName(), "имя должно быть subTask1NEW");
     }
+
     @DisplayName("Удалить подзадачу")
     @Test
     void shouldDeleteSubTask() {
-        inMemoryTaskManager.createSubTask(new SubTask("subTask2", Status.IN_PROGRESS, "subTask2", epic1));
+        inMemoryTaskManager.createSubTask(new SubTask("subTask2", Status.IN_PROGRESS, "subTask2", epic1, LocalDateTime.parse("2024-06-12T19:30"), Duration.ofMinutes(15)));
         inMemoryTaskManager.deleteSubTask(subTask1);
         assertEquals(1, inMemoryTaskManager.getAllSubTask().size(), "должна остаться одна подзадача");
         assertEquals(1, inMemoryTaskManager.getEpic(2).getSubTasks().size(), "в эпике должна остаться одна подзадача");
         assertEquals("subTask2", inMemoryTaskManager.getEpic(2).getSubTasks().get(0).getName(), "имя подзадачи в эпике должно быть subTask2");
     }
+
     @DisplayName("Получить все подзадачи")
     @Test
     void shouldGetAllSubTask() {
-        inMemoryTaskManager.createSubTask(new SubTask("subTask2", Status.IN_PROGRESS, "subTask2", epic1));
+        inMemoryTaskManager.createSubTask(new SubTask("subTask2", Status.IN_PROGRESS, "subTask2", epic1, LocalDateTime.parse("2024-06-12T19:30"), Duration.ofMinutes(15)));
         assertEquals(2, inMemoryTaskManager.getAllSubTask().size(), "должно быть две подзадачи");
         assertEquals(3, inMemoryTaskManager.getAllSubTask().get(0).getId(), "id первой подзадачи должен быть равен 3");
         assertEquals(4, inMemoryTaskManager.getAllSubTask().get(1).getId(), "id второй подзадачи должен быть равен 4");
     }
+
     @DisplayName("Удалить все подзадачи")
     @Test
     void shouldClearSubTask() {
-        inMemoryTaskManager.createSubTask(new SubTask("subTask2", Status.IN_PROGRESS, "subTask2", epic1));
+        inMemoryTaskManager.createSubTask(new SubTask("subTask2", Status.IN_PROGRESS, "subTask2", epic1, LocalDateTime.parse("2024-06-12T19:30"), Duration.ofMinutes(15)));
         inMemoryTaskManager.clearSubTask();
         assertEquals(0, inMemoryTaskManager.getAllSubTask().size(), "должно быть 0 подзадач");
         assertEquals(0, inMemoryTaskManager.getEpic(2).getSubTasks().size(), "в эпике должно быть 0 подзадач");
+    }
+
+    @DisplayName("Получение приоритетного списка")
+    @Test
+    void shouldGetPrioritizedTasks() {
+        assertEquals(2, inMemoryTaskManager.getPrioritizedTasks().size(), "размер должен быть 2");
+        assertEquals("task1", inMemoryTaskManager.getPrioritizedTasks().getFirst().getName(), "имя должно быть task1");
+    }
+
+    @DisplayName("Добавление подзадачи")
+    @Test
+    void shouldGetPrioritizedAddSubTask() {
+        inMemoryTaskManager.createSubTask(new SubTask("subTask2", Status.IN_PROGRESS, "subTask2", epic1, LocalDateTime.parse("2024-06-12T19:50"), Duration.ofMinutes(15)));
+        assertEquals(3, inMemoryTaskManager.getPrioritizedTasks().size(), "размер должен быть 3");
+        assertEquals("subTask2", inMemoryTaskManager.getPrioritizedTasks().getFirst().getName(), "имя должно быть subTask2");
+        inMemoryTaskManager.createSubTask(new SubTask("subTask3", Status.IN_PROGRESS, "subTask3", epic1, null, Duration.ofMinutes(15)));
+        inMemoryTaskManager.createSubTask(new SubTask("subTask4", Status.IN_PROGRESS, "subTask4", epic1, LocalDateTime.parse("2024-06-12T19:50"), null));
+        inMemoryTaskManager.getAllSubTask().stream().forEach(n -> System.out.println(n));
+        inMemoryTaskManager.getPrioritizedTasks().stream().forEach(n -> System.out.println(n));
+        assertEquals(3, inMemoryTaskManager.getPrioritizedTasks().size(), "размер должен быть 3");
+        inMemoryTaskManager.updateSubTask(new SubTask(6, "subTask4", Status.IN_PROGRESS, "subTask4", 2, LocalDateTime.parse("2024-06-12T18:50"), Duration.ofMinutes(15)));
+        assertEquals(4, inMemoryTaskManager.getPrioritizedTasks().size(), "размер должен быть 4");
+        assertEquals("subTask4", inMemoryTaskManager.getPrioritizedTasks().getFirst().getName(), "имя должно быть subTask4");
+        inMemoryTaskManager.getAllSubTask().stream().forEach(n -> System.out.println(n));
+        inMemoryTaskManager.getPrioritizedTasks().stream().forEach(n -> System.out.println(n));
     }
 }
 

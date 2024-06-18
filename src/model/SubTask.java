@@ -1,27 +1,21 @@
 package model;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class SubTask extends Task {
     private Epic epic;
     private int epicId;
 
-    public SubTask(String name, Status status, String description, Epic epic) {
-        super(name, status, description);
+    public SubTask(String name, Status status, String description, Epic epic, LocalDateTime startTime, Duration duration) {
+        super(name, status, description, startTime, duration);
         this.epic = epic;
     }
 
-    public SubTask(int id, String name, Status status, String description) {
-        super(id, name, status, description);
-    }
 
-    public SubTask(int id, String name, Status status, String description, Epic epic) {
-        super(id, name, status, description);
-        this.epic = epic;
-    }
-
-    public SubTask(int id, String name, Status status, String description, int epicId) {
-        super(id, name, status, description);
+    public SubTask(int id, String name, Status status, String description, int epicId, LocalDateTime startTime, Duration duration) {
+        super(id, name, status, description, startTime, duration);
         this.epicId = epicId;
     }
 
@@ -55,6 +49,8 @@ public class SubTask extends Task {
                 ", name='" + name + '\'' +
                 ", status=" + status +
                 ", description='" + description + '\'' +
+                ", startTime='" + startTime + '\'' +
+                ", duration='" + duration + '\'' +
                 "} ";
     }
 
@@ -64,12 +60,12 @@ public class SubTask extends Task {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         SubTask subTask = (SubTask) o;
-        return Objects.equals(epic, subTask.epic);
+        return id == subTask.getId();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), epic);
+        return Objects.hash(super.hashCode(), id);
     }
 }
 
