@@ -1,6 +1,5 @@
 id,type,name,status,description,epic,startTime,duration
-4,TASK,Task2,NEW,Task2,null,2024-06-12T13:00,15
-5,TASK,Task2,NEW,Task2,null,2024-06-12T14:00,15
+4,TASK,Task1,IN_PROGRESS,Task1,null,2024-06-22T18:30:10.198207600,20
 1,EPIC,Epic1,NEW,Epic1,null,2023-06-08T20:25,30
 2,SUBTASK,SubTask4,NEW,SubTask4,1,2023-06-09T20:25,15
 3,SUBTASK,SubTask4,NEW,SubTask4,1,2023-06-08T20:25,15
