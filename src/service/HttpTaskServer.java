@@ -21,6 +21,7 @@ public class HttpTaskServer {
         this.taskManager = taskManager;
         httpServer = HttpServer.create(new InetSocketAddress(PORT), 0);
     }
+
     public static void main(String[] args) throws IOException {
         HttpTaskServer server = new HttpTaskServer(Managers.getDefault());
         server.start();
