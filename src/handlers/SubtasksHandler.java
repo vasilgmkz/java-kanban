@@ -129,12 +129,12 @@ public class SubtasksHandler extends BaseHttpHandler implements HttpHandler {
                     return;
                 }
                 if (subTask.getId() == 0) {
-                    SubTask create_subTask = taskManager.createSubTask(new SubTask(subTask.getName(), subTask.getStatus(), subTask.getDescription(), taskManager.getEpic(subTask.getEpicId()), subTask.getStartTime(), subTask.getDuration()));
-                    if (create_subTask == null) {
+                    SubTask createSubTask = taskManager.createSubTask(new SubTask(subTask.getName(), subTask.getStatus(), subTask.getDescription(), taskManager.getEpic(subTask.getEpicId()), subTask.getStartTime(), subTask.getDuration()));
+                    if (createSubTask == null) {
                         throw new ValidationException(new StringBuilder());
                     }
-                    create_subTask.setEpicId(subTask.getEpicId());
-                    String response = gson.toJson(create_subTask);
+                    createSubTask.setEpicId(subTask.getEpicId());
+                    String response = gson.toJson(createSubTask);
                     sendText(subtasksHandler, response, 201);
                     return;
                 }

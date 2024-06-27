@@ -127,8 +127,8 @@ public class EpicHandler extends BaseHttpHandler implements HttpHandler {
                     return;
                 }
                 System.out.println(epic);
-                Epic create_epic = taskManager.createEpic(new Epic(epic.getName(), epic.getDescription()));
-                String response = gson.toJson(create_epic);
+                Epic createEpic = taskManager.createEpic(new Epic(epic.getName(), epic.getDescription()));
+                String response = gson.toJson(createEpic);
                 sendText(epicHandler, response, 201);
             } catch (Exception e) {
                 e.printStackTrace();

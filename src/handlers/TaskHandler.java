@@ -93,8 +93,8 @@ public class TaskHandler extends BaseHttpHandler implements HttpHandler {
                 }
                 Task task = (Task) optional.get();
                 if (task.getId() == 0) {
-                    Task create_task = taskManager.createTask(new Task(task.getName(), task.getStatus(), task.getDescription(), task.getStartTime(), task.getDuration()));
-                    String response = gson.toJson(create_task);
+                    Task createTask = taskManager.createTask(new Task(task.getName(), task.getStatus(), task.getDescription(), task.getStartTime(), task.getDuration()));
+                    String response = gson.toJson(createTask);
                     sendText(taskHandler, response, 201);
                     return;
                 }
