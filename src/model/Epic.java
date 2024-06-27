@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class Epic extends Task {
-    private transient final ArrayList<SubTask> subTasks = new ArrayList<>();
+    private transient ArrayList<SubTask> subTasks = new ArrayList<>();
     LocalDateTime endTime;
 
     public Epic(String name, String description) {
