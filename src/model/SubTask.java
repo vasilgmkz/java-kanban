@@ -6,7 +6,7 @@ import java.util.Objects;
 
 public class SubTask extends Task {
 
-    transient private Epic epic;
+    private transient Epic epic;
     private int epicId;
 
     public SubTask(String name, Status status, String description, Epic epic, LocalDateTime startTime, Duration duration) {
