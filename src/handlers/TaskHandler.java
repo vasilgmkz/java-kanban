@@ -7,10 +7,14 @@ import com.sun.net.httpserver.HttpHandler;
 import converter.DurationAdapter;
 import converter.LDT_Adapter;
 import exception.NotFoundException;
+import exception.ValidationException;
+import model.Task;
 import service.TaskManager;
 
-import javax.xml.datatype.Duration;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -37,17 +41,16 @@ public class TaskHandler extends BaseHttpHandler implements HttpHandler {
                 break;
             }
             case POST_TASK: {
-
+                postTask(taskHandler);
                 break;
             }
             case DELETE_TASK: {
-
+                deleteTask(taskHandler);
                 break;
             }
             default:
                 sendText(taskHandler, "Такого эндпоинта не существует", 400);
         }
-
     }
 
 
@@ -68,11 +71,62 @@ public class TaskHandler extends BaseHttpHandler implements HttpHandler {
             }
         }
         if (requestMethod.equals("DELETE")) {
-            if (pathParts.length == 2) {
+            if (pathParts.length == 3) {
                 return Endpoint.DELETE_TASK;
             }
         }
         return Endpoint.UNKNOWN;
+    }
+
+    private void postTask(HttpExchange taskHandler) throws IOException {
+        try (taskHandler) {
+            try {
+                Optional optional = parseComment(taskHandler.getRequestBody());
+                GsonBuilder gsonBuilder = new GsonBuilder();
+                DurationAdapter durationAdapter = new DurationAdapter();
+                LDT_Adapter ldtAdapter = new LDT_Adapter();
+                gsonBuilder.setPrettyPrinting().registerTypeAdapter(LocalDateTime.class, ldtAdapter).registerTypeAdapter(Duration.class, durationAdapter).serializeNulls();
+                Gson gson = gsonBuilder.create();
+                if (optional.isEmpty()) {
+                    sendText(taskHandler, "Запрос не содержит задачу", 400);
+                    return;
+                }
+                Task task = (Task) optional.get();
+                if (task.getId() == 0) {
+                    Task create_task = taskManager.createTask(new Task(task.getName(), task.getStatus(), task.getDescription(), task.getStartTime(), task.getDuration()));
+                    String response = gson.toJson(create_task);
+                    sendText(taskHandler, response, 201);
+                    return;
+                }
+                if (taskManager.getAllTaskId().contains(task.getId())) {
+                    taskManager.updateTask(task);
+                    String response = gson.toJson(task);
+                    sendText(taskHandler, response, 201);
+                    return;
+                }
+                sendText(taskHandler, "Задачи с таким id не найдено", 400);
+            } catch (ValidationException e) {
+                sendText(taskHandler, "Задача пересекается с существующей задачей", 406);
+            } catch (Exception e) {
+                sendText(taskHandler, "Internal Server Error", 500);
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private Optional<Task> parseComment(InputStream bodyInputStream) throws IOException {
+
+        String body = new String(bodyInputStream.readAllBytes(), StandardCharsets.UTF_8);
+        if (body.isBlank()) {
+            return Optional.empty();
+        }
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        DurationAdapter durationAdapter = new DurationAdapter();
+        LDT_Adapter ldtAdapter = new LDT_Adapter();
+        gsonBuilder.setPrettyPrinting().registerTypeAdapter(LocalDateTime.class, ldtAdapter).registerTypeAdapter(Duration.class, durationAdapter).serializeNulls();
+        Gson gson = gsonBuilder.create();
+        Task task = gson.fromJson(body, Task.class);
+        return Optional.of(task);
     }
 
     private void getTasks(HttpExchange taskHandler) throws IOException {
@@ -81,11 +135,12 @@ public class TaskHandler extends BaseHttpHandler implements HttpHandler {
                 LDT_Adapter ldtAdapter = new LDT_Adapter();
                 DurationAdapter durationAdapter = new DurationAdapter();
                 GsonBuilder gsonBuilder = new GsonBuilder();
-                gsonBuilder.setPrettyPrinting().registerTypeAdapter(LocalDateTime.class, ldtAdapter).registerTypeAdapter(Duration.class, durationAdapter);
+                gsonBuilder.setPrettyPrinting().registerTypeAdapter(LocalDateTime.class, ldtAdapter).registerTypeAdapter(Duration.class, durationAdapter).serializeNulls();
                 Gson gson = gsonBuilder.create();
                 String response = gson.toJson(taskManager.getAllTask());
                 sendText(taskHandler, response, 200);
             } catch (Exception e) {
+                sendText(taskHandler, "Internal Server Error", 500);
                 e.printStackTrace();
             }
         }
@@ -96,7 +151,7 @@ public class TaskHandler extends BaseHttpHandler implements HttpHandler {
             try {
                 Optional<Integer> postIdOpt = getPostId(taskHandler);
                 if (postIdOpt.isEmpty()) {
-                    sendText(taskHandler, "Некорректный идентификатор поста", 404);
+                    sendText(taskHandler, "Некорректный идентификатор id", 404);
                     return;
                 }
                 int postId = postIdOpt.get();
@@ -104,14 +159,32 @@ public class TaskHandler extends BaseHttpHandler implements HttpHandler {
                     LDT_Adapter ldtAdapter = new LDT_Adapter();
                     DurationAdapter durationAdapter = new DurationAdapter();
                     GsonBuilder gsonBuilder = new GsonBuilder();
-                    gsonBuilder.setPrettyPrinting().registerTypeAdapter(Duration.class, durationAdapter).registerTypeAdapter(LocalDateTime.class, ldtAdapter);
+                    gsonBuilder.setPrettyPrinting().registerTypeAdapter(Duration.class, durationAdapter).registerTypeAdapter(LocalDateTime.class, ldtAdapter).serializeNulls();
                     Gson gson = gsonBuilder.create();
                     String response = gson.toJson(taskManager.getTask(postId));
                     sendText(taskHandler, response, 200);
                 } catch (NotFoundException e) {
-                    sendText(taskHandler, "Такой задачи нет", 404);
+                    sendText(taskHandler, "Задача с таким id отсутствует", 404);
                 }
             } catch (Exception e) {
+                sendText(taskHandler, "Internal Server Error", 500);
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void deleteTask(HttpExchange taskHandler) throws IOException {
+        try (taskHandler) {
+            try {
+                String id = taskHandler.getRequestURI().getPath().split("/")[2];
+                if (taskManager.getAllTaskId().contains(Integer.parseInt(id))) {
+                    taskManager.deleteTask(Integer.parseInt(id));
+                    sendText(taskHandler, "Задача удалена", 200);
+                    return;
+                }
+                sendText(taskHandler, "Задача с таким id отсутствует", 404);
+            } catch (Exception e) {
+                sendText(taskHandler, "Internal Server Error", 500);
                 e.printStackTrace();
             }
         }

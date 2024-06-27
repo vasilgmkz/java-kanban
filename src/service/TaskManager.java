@@ -17,6 +17,10 @@ public interface TaskManager {
 
     ArrayList<Task> getAllTask();
 
+    ArrayList<Integer> getAllTaskId();
+
+    ArrayList<Integer> getAllSubTaskId();
+
     void deleteTask(int id);
 
     void clearTask();
@@ -38,6 +42,8 @@ public interface TaskManager {
     Epic createEpic(Epic epic);
 
     ArrayList<Epic> getAllEpic();
+
+    ArrayList<Integer> getAllEpicId();
 
     Epic getEpic(int id);
 

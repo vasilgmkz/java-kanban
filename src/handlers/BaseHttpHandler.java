@@ -15,21 +15,4 @@ public class BaseHttpHandler {
         }
         exchange.close();
     }
-
-    protected void sendNotFound(HttpExchange exchange, String responseString) throws IOException {
-        try (OutputStream os = exchange.getResponseBody()) {
-            exchange.sendResponseHeaders(404, 0);
-            os.write(responseString.getBytes(StandardCharsets.UTF_8));
-        }
-        exchange.close();
-    }
-
-    protected void sendHasInteractions(HttpExchange exchange, String responseString) throws IOException {
-        try (OutputStream os = exchange.getResponseBody()) {
-            exchange.sendResponseHeaders(406, 0);
-            os.write(responseString.getBytes(StandardCharsets.UTF_8));
-        }
-        exchange.close();
-    }
-
 }

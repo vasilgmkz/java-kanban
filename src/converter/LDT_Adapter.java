@@ -14,11 +14,19 @@ public class LDT_Adapter extends TypeAdapter<LocalDateTime> {
 
     @Override
     public void write(JsonWriter jsonWriter, LocalDateTime localDateTime) throws IOException {
+        if (localDateTime == null) {
+            jsonWriter.value("null");
+            return;
+        }
         jsonWriter.value(localDateTime.format(dtf));
     }
 
     @Override
     public LocalDateTime read(JsonReader jsonReader) throws IOException {
-        return LocalDateTime.parse(jsonReader.nextString(), dtf);
+        String dateTime = jsonReader.nextString();
+        if (dateTime.equals("null")) {
+            return null;
+        }
+        return LocalDateTime.parse(dateTime, dtf);
     }
 }

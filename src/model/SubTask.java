@@ -5,12 +5,14 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class SubTask extends Task {
-    private Epic epic;
+
+    transient private Epic epic;
     private int epicId;
 
     public SubTask(String name, Status status, String description, Epic epic, LocalDateTime startTime, Duration duration) {
         super(name, status, description, startTime, duration);
         this.epic = epic;
+        this.epicId = epic.getId();
     }
 
 
@@ -37,6 +39,10 @@ public class SubTask extends Task {
         this.epic = epic;
     }
 
+    public void setEpicId(int id) {
+        this.epicId = id;
+    }
+
     @Override
     public TaskType getType() {
         return TaskType.SUBTASK;
@@ -49,6 +55,7 @@ public class SubTask extends Task {
                 ", name='" + name + '\'' +
                 ", status=" + status +
                 ", description='" + description + '\'' +
+                ", epicId='" + epicId + '\'' +
                 ", startTime='" + startTime + '\'' +
                 ", duration='" + duration + '\'' +
                 "} ";
