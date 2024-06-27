@@ -19,9 +19,10 @@ public class PrioritizedHandler extends BaseHttpHandler implements HttpHandler {
         this.taskManager = taskManager;
     }
 
-    enum Endpoint {GET, UNKNOWN}
-
-    ;
+    enum Endpoint {
+        GET,
+        UNKNOWN
+    }
 
     @Override
     public void handle(HttpExchange prioritizedHandler) throws IOException {

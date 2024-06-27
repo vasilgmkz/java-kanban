@@ -26,7 +26,13 @@ public class SubtasksHandler extends BaseHttpHandler implements HttpHandler {
         this.taskManager = taskManager;
     }
 
-    enum Endpoint {GET_SUB_TASKS, GET_SUB_TASK_ID, POST_SUB_TASK, DELETE_SUB_TASK, UNKNOWN}
+    enum Endpoint {
+        GET_SUB_TASKS,
+        GET_SUB_TASK_ID,
+        POST_SUB_TASK,
+        DELETE_SUB_TASK,
+        UNKNOWN
+    }
 
     @Override
     public void handle(HttpExchange subtasksHandler) throws IOException {

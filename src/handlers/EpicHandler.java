@@ -24,7 +24,14 @@ public class EpicHandler extends BaseHttpHandler implements HttpHandler {
         this.taskManager = taskManager;
     }
 
-    enum Endpoint {GET_EPICS, GET_EPIC_ID, GET_EPIC_ID_SUBTASK, POST_EPIC, DELETE_EPIC, UNKNOWN}
+    enum Endpoint {
+        GET_EPICS,
+        GET_EPIC_ID,
+        GET_EPIC_ID_SUBTASK,
+        POST_EPIC,
+        DELETE_EPIC,
+        UNKNOWN
+    }
 
     @Override
     public void handle(HttpExchange epicHandler) throws IOException {

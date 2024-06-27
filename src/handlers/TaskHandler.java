@@ -21,7 +21,13 @@ import java.util.Optional;
 public class TaskHandler extends BaseHttpHandler implements HttpHandler {
     private final TaskManager taskManager;
 
-    enum Endpoint {GET_TASKS, GET_TASK_ID, POST_TASK, DELETE_TASK, UNKNOWN}
+    enum Endpoint {
+        GET_TASKS,
+        GET_TASK_ID,
+        POST_TASK,
+        DELETE_TASK,
+        UNKNOWN
+    }
 
     public TaskHandler(TaskManager taskManager) {
         this.taskManager = taskManager;
