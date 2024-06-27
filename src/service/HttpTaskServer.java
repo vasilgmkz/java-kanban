@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sun.net.httpserver.HttpServer;
 import converter.DurationAdapter;
-import converter.LDT_Adapter;
+import converter.localDateTimeAdapter;
 import handlers.*;
 
 import java.io.IOException;
@@ -40,7 +40,7 @@ public class HttpTaskServer {
     }
 
     public Gson getGson() {
-        LDT_Adapter ldtAdapter = new LDT_Adapter();
+        localDateTimeAdapter ldtAdapter = new localDateTimeAdapter();
         DurationAdapter durationAdapter = new DurationAdapter();
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.setPrettyPrinting().registerTypeAdapter(LocalDateTime.class, ldtAdapter).registerTypeAdapter(Duration.class, durationAdapter).serializeNulls();

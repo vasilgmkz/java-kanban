@@ -5,7 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import converter.DurationAdapter;
-import converter.LDT_Adapter;
+import converter.localDateTimeAdapter;
 import model.Epic;
 import model.Status;
 import service.TaskManager;
@@ -185,7 +185,7 @@ public class EpicHandler extends BaseHttpHandler implements HttpHandler {
     }
 
     private Gson getGson() {
-        LDT_Adapter ldtAdapter = new LDT_Adapter();
+        localDateTimeAdapter ldtAdapter = new localDateTimeAdapter();
         DurationAdapter durationAdapter = new DurationAdapter();
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.setPrettyPrinting().registerTypeAdapter(LocalDateTime.class, ldtAdapter).registerTypeAdapter(Duration.class, durationAdapter).serializeNulls();

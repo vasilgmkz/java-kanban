@@ -5,7 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import converter.DurationAdapter;
-import converter.LDT_Adapter;
+import converter.localDateTimeAdapter;
 import exception.NotFoundException;
 import exception.ValidationException;
 import model.Task;
@@ -84,7 +84,7 @@ public class TaskHandler extends BaseHttpHandler implements HttpHandler {
                 Optional optional = parseComment(taskHandler.getRequestBody());
                 GsonBuilder gsonBuilder = new GsonBuilder();
                 DurationAdapter durationAdapter = new DurationAdapter();
-                LDT_Adapter ldtAdapter = new LDT_Adapter();
+                localDateTimeAdapter ldtAdapter = new localDateTimeAdapter();
                 gsonBuilder.setPrettyPrinting().registerTypeAdapter(LocalDateTime.class, ldtAdapter).registerTypeAdapter(Duration.class, durationAdapter).serializeNulls();
                 Gson gson = gsonBuilder.create();
                 if (optional.isEmpty()) {
@@ -122,7 +122,7 @@ public class TaskHandler extends BaseHttpHandler implements HttpHandler {
         }
         GsonBuilder gsonBuilder = new GsonBuilder();
         DurationAdapter durationAdapter = new DurationAdapter();
-        LDT_Adapter ldtAdapter = new LDT_Adapter();
+        localDateTimeAdapter ldtAdapter = new localDateTimeAdapter();
         gsonBuilder.setPrettyPrinting().registerTypeAdapter(LocalDateTime.class, ldtAdapter).registerTypeAdapter(Duration.class, durationAdapter).serializeNulls();
         Gson gson = gsonBuilder.create();
         Task task = gson.fromJson(body, Task.class);
@@ -132,7 +132,7 @@ public class TaskHandler extends BaseHttpHandler implements HttpHandler {
     private void getTasks(HttpExchange taskHandler) throws IOException {
         try (taskHandler) {
             try {
-                LDT_Adapter ldtAdapter = new LDT_Adapter();
+                localDateTimeAdapter ldtAdapter = new localDateTimeAdapter();
                 DurationAdapter durationAdapter = new DurationAdapter();
                 GsonBuilder gsonBuilder = new GsonBuilder();
                 gsonBuilder.setPrettyPrinting().registerTypeAdapter(LocalDateTime.class, ldtAdapter).registerTypeAdapter(Duration.class, durationAdapter).serializeNulls();
@@ -156,7 +156,7 @@ public class TaskHandler extends BaseHttpHandler implements HttpHandler {
                 }
                 int postId = postIdOpt.get();
                 try {
-                    LDT_Adapter ldtAdapter = new LDT_Adapter();
+                    localDateTimeAdapter ldtAdapter = new localDateTimeAdapter();
                     DurationAdapter durationAdapter = new DurationAdapter();
                     GsonBuilder gsonBuilder = new GsonBuilder();
                     gsonBuilder.setPrettyPrinting().registerTypeAdapter(Duration.class, durationAdapter).registerTypeAdapter(LocalDateTime.class, ldtAdapter).serializeNulls();
