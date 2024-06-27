@@ -5,7 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import converter.DurationAdapter;
-import converter.localDateTimeAdapter;
+import converter.LocalDateTimeAdapter;
 import service.TaskManager;
 
 import java.io.IOException;
@@ -43,7 +43,7 @@ public class PrioritizedHandler extends BaseHttpHandler implements HttpHandler {
     }
 
     private Gson getGson() {
-        localDateTimeAdapter ldtAdapter = new localDateTimeAdapter();
+        LocalDateTimeAdapter ldtAdapter = new LocalDateTimeAdapter();
         DurationAdapter durationAdapter = new DurationAdapter();
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.setPrettyPrinting().registerTypeAdapter(LocalDateTime.class, ldtAdapter).registerTypeAdapter(Duration.class, durationAdapter).serializeNulls();
