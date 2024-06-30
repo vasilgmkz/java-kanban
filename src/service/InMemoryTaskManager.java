@@ -76,6 +76,11 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
+    public ArrayList<Integer> getAllTaskId() {
+        return new ArrayList<>(tasks.keySet());
+    }
+
+    @Override
     public void deleteTask(int id) {
         prioritizedTasks.remove(tasks.remove(id));
         historyManager.remove(id);
@@ -90,6 +95,11 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public ArrayList<SubTask> getAllSubTask() {
         return new ArrayList<>(subTasks.values());
+    }
+
+    @Override
+    public ArrayList<Integer> getAllSubTaskId() {
+        return new ArrayList<>(subTasks.keySet());
     }
 
     @Override
@@ -211,6 +221,11 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
+    public ArrayList<Integer> getAllEpicId() {
+        return new ArrayList<>(epics.keySet());
+    }
+
+    @Override
     public Epic getEpic(int id) {
         try {
             if (epics.get(id) == null) {
@@ -258,7 +273,7 @@ public class InMemoryTaskManager implements TaskManager {
     public void save() {
     }
 
-    protected boolean checkTaskTime(Task task) {
+    protected boolean checkTaskTime(Task task) throws ValidationException {
         if (task.getStartTime() == null || task.getDuration() == null) {
             return false;
         }
